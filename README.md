@@ -29,7 +29,7 @@ Add this dependency to your pubspec.yaml
 Import the library in your dart application
 
 ```
-  import "package:tekartik_jsapi_picker/picker.dart";
+  import 'package:tekartik_google_jsapi_picker/picker.dart';
 ```
 
 Initialize the library with your parameters
