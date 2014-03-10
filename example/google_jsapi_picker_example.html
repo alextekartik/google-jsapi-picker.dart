@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+  href="packages/bootstrap_for_pub/3.1.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+  href="packages/bootstrap_for_pub/3.1.0/css/bootstrap-theme.min.css">
+<title>Google jsapi picker example</title>
+</head>
+
+<body>
+  <div class="container">
+    <h1 id="text">Google jsapi picker example</h1>
+    <form class="app-gapi" role="form">
+      <h2>Google Picker</h2>
+      <div class="bg-info form-group">
+        <p class="app-result"></p>
+      </div>
+    </form>
+    <form role="form" class="app-auth hidden">
+      <h2>Auth</h2>
+       <div class="checkbox">
+          <label> <input type="checkbox" class="app-autoauth">Authorized on start
+          </label>
+        </div>
+      <p>
+        Make sure you have created a project in your <a
+          href="https://console.developers.google.com/">developer
+          console</a>
+      </p>
+        <div class="form-group">
+        <label for="appInputClientId">CLIENT ID</label> <input
+          class="form-control" id="appInputClientId"
+          placeholder="Enter client id from developer console">
+      </div>
+   
+       <div class="checkbox">
+          <label> <input type="checkbox" class="app-approval-prompt">Force approval prompt
+          </label>
+        </div>
+      <div class="form-group">
+        <button class="btn btn-primary app-authorize">Authorize</button>
+      </div>
+      <div class="bg-info form-group">
+        <p class="app-result"></p>
+      </div>
+    </form>
+    <form role="form" class="app-picker hidden">
+      <h2>Picker</h2>
+      <p>
+        Create the developer key in your <a
+          href="https://console.developers.google.com/">developer
+          console</a>
+      </p>
+     
+      <div class="form-group">
+        <label for="appInputDeveloperKey">DEVELOPER KEY</label> <input
+          class="form-control" id="appInputDeveloperKey"
+          placeholder="Your developer key from developer console">
+      </div>
+      
+       <div class="form-group">
+        <label for="appInputMimeTypes">mime types (comma separated - plain/text)</label> <input
+          class="form-control" id="appInputMimeTypes"
+          placeholder="The mime types to open">
+      </div>
+      
+      <div class="form-group">
+        <button class="btn btn-primary app-pick">Pick</button>
+      </div>
+      <div class="bg-info form-group">
+        <p class="app-result"></p>
+      </div>
+    </form>
+  </div>
+
+  <script type="application/dart" src="google_jsapi_picker_example.dart"></script>
+  <!-- for this next line to work, your pubspec.yaml file must have a dependency on 'browser' -->
+  <script src="packages/browser/dart.js"></script>
+</body>
+</html>
