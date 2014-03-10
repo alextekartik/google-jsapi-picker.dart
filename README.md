@@ -3,6 +3,8 @@ google-jsapi-picker.dart
 
 Google File picker access from Dart
 
+[Online demo](http://gstest.tekartik.com/google-jsapi-picker/example/google_jsapi_picker_example.html)
+
 ### Description
 
 Dart library to use for Google File Picker jsapi / Client-side flow
