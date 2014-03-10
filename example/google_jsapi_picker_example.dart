@@ -54,14 +54,14 @@ void _pick() {
   uiPicker.pick().then((PickerDataDocuments docs) {
     pickResult.innerHtml = docs.toString();
     
-    pickResult.innerHtml = docs[0].id;
+    //pickResult.innerHtml = docs[0].id;
   });
 }
 void pickerMain(String authToken) {
   _authToken = authToken;
 
   Element pickerForm = querySelector('form.app-picker');
-  authorizeResult = pickerForm.querySelector('.app-result');
+  pickResult = pickerForm.querySelector('.app-result');
   pickerForm.classes.remove('hidden');
   developerKeyInput = pickerForm.querySelector(
       'input#appInputDeveloperKey');
