@@ -5,16 +5,14 @@ import 'dart:js';
 
 import 'package:tekartik_google_jsapi/google_jsapi.dart';
 
-import 'package:tekartik_google_jsapi/js_utils.dart';
-
 // https://developers.google.com/picker/docs/results
 
 class Picker {
   GooglePicker picker;
   JsObject _jsObject;
-  
+
   Picker._(this.picker);
-  
+
   /**
    * Single stream controller
    * 
@@ -23,19 +21,19 @@ class Picker {
   Stream<PickerData> get stream {
     return ctlr.stream;
   }
-  
+
   StreamController<PickerData> ctlr = new StreamController();
-  
+
   void _callback(JsObject jsData) {
     //print(jsObjectAsMap(jsData));
     PickerData data = new PickerData(picker, jsData);
     ctlr.add(data);
   }
-  
+
   void set visible(bool _visible) {
-    _jsObject.callMethod('setVisible', [ _visible ]);
+    _jsObject.callMethod('setVisible', [_visible]);
   }
-  
+
   /**
    * Return Future<null> on cancel
    */
@@ -55,60 +53,79 @@ class Picker {
     });
     return completer.future;
   }
-  
-  
- 
+
+
+
 }
 
 class PickerView {
   JsObject _jsObject;
+
+  PickerView._();
+
   PickerView(GooglePicker picker, String viewId) {
-    _jsObject = new JsObject(picker._pickerViewConstructor, [viewId]); 
+    _jsObject = new JsObject(picker._pickerViewConstructor, [viewId]);
   }
   JsObject get jsPickerView => _jsObject;
-  
+
   void set mimeTypes(List<String> mimeTypes) {
     _jsObject.callMethod('setMimeTypes', [mimeTypes.join(',')]);
   }
 }
+
+class PickerDocsView extends PickerView {
+
+  PickerDocsView(GooglePicker picker, String viewId): super._() {
+    _jsObject = new JsObject(picker._pickerDocsViewConstructor, [viewId]);
+  }
+  JsObject get jsPickerView => _jsObject;
+
+  void set selectFolderEnabled(bool enabled) {
+    _jsObject.callMethod('setSelectFolderEnabled', [enabled]);
+  }
+  void set includeFolders(bool include) {
+    _jsObject.callMethod('setIncludeFolders', [include]);
+  }
+}
+
 class PickerBuilder {
   JsObject jsPickerBuilder;
   GooglePicker gpicker;
-  
+
   PickerBuilder(this.gpicker) {
     jsPickerBuilder = new JsObject(gpicker._pickerBuilderConstructor);
   }
-  
+
   void addView(PickerView view) {
     jsPickerBuilder.callMethod('addView', [view.jsPickerView]);
   }
-  
+
   void addViewId(String viewId) {
     jsPickerBuilder.callMethod('addView', [viewId]);
   }
-  
+
   void disableFeature(String feature) {
     jsPickerBuilder.callMethod('disableFeature', [feature]);
   }
-  
+
   void enableFeature(String feature) {
     jsPickerBuilder.callMethod('enableFeature', [feature]);
   }
-  
+
   void set oauthToken(String _oauthToken) {
     jsPickerBuilder.callMethod('setOAuthToken', [_oauthToken]);
   }
-  
+
   void set developerKey(String _developerKey) {
     jsPickerBuilder.callMethod('setDeveloperKey', [_developerKey]);
   }
-  
+
   void set selectableMimeTypes(List<String> mimeTypes) {
     jsPickerBuilder.callMethod('setSelectableMimeTypes', [mimeTypes.join(',')]);
   }
-  
- 
-  
+
+
+
   Picker build() {
     Picker picker = new Picker._(gpicker);
     jsPickerBuilder.callMethod('setCallback', [picker._callback]);
@@ -116,21 +133,21 @@ class PickerBuilder {
     picker._jsObject = jsPicker;
     return picker;
   }
- 
+
 }
 
 class PickerDataDocument {
   JsObject jsObject;
   GooglePicker picker;
   PickerDataDocument(this.picker, this.jsObject);
-  
+
   String get url => jsObject[picker.document.URL];
   String get description => jsObject[picker.document.DESCRIPTION];
   String get id => jsObject[picker.document.ID];
   String get mimeType => jsObject[picker.document.MIME_TYPE];
   String get name => jsObject[picker.document.NAME];
   int get version => jsObject[picker.document.VERSION];
-  
+
   Map asMap() {
     var map = {};
     if (url != null) {
@@ -153,17 +170,18 @@ class PickerDataDocument {
     }
     return map;
   }
- 
+
 }
 
 class PickerDataDocuments {
   JsArray jsArray;
   GooglePicker picker;
   PickerDataDocuments(this.picker, this.jsArray);
-  
-  PickerDataDocument operator [](int index) => new PickerDataDocument(picker, jsArray[index]);
+
+  PickerDataDocument operator [](int index) => new PickerDataDocument(picker,
+      jsArray[index]);
   int get length => jsArray.length;
-  
+
   List asList() {
     List<Map> docs = [];
     for (int i = 0; i < length; i++) {
@@ -171,7 +189,7 @@ class PickerDataDocuments {
     }
     return docs;
   }
-  
+
   String toString() {
     return asList().toString();
   }
@@ -181,16 +199,17 @@ class PickerData {
   JsObject jsObject;
   GooglePicker picker;
   PickerData(this.picker, this.jsObject);
-  
+
   String get action => jsObject[picker.response.ACTION];
   PickerDataDocuments _documents;
   PickerDataDocuments get documents {
     if (_documents == null) {
-      _documents = new PickerDataDocuments(picker, jsObject[picker.response.DOCUMENTS]);
+      _documents = new PickerDataDocuments(picker,
+          jsObject[picker.response.DOCUMENTS]);
     }
     return _documents;
   }
-  
+
   String toString() {
     var map = {};
     if (jsObject != null) {
@@ -228,7 +247,7 @@ class PickerResponse {
 class PickerFeature {
   JsObject _jsObject;
   PickerFeature(this._jsObject);
-  
+
   String get MULTISELECT_ENABLED => _jsObject['MULTISELECT_ENABLED'];
 }
 
@@ -244,11 +263,12 @@ class PickerDocument {
 }
 
 class GooglePicker {
-  
-  static const String SCOPE_DRIVE_APP_FILE = 'https://www.googleapis.com/auth/drive.file'; // files created/opened by the app
+
+  static const String SCOPE_DRIVE_APP_FILE =
+      'https://www.googleapis.com/auth/drive.file'; // files created/opened by the app
 
   JsObject jsObject;
-  
+
   PickerAction _action;
   PickerAction get action {
     if (_action == null) {
@@ -256,31 +276,31 @@ class GooglePicker {
     }
     return _action;
   }
-  
+
   PickerResponse _response;
-  PickerResponse get response  {
-    if (_response  == null) {
-      _response  = new PickerResponse(jsObject['Response']);
+  PickerResponse get response {
+    if (_response == null) {
+      _response = new PickerResponse(jsObject['Response']);
     }
-    return _response ;
+    return _response;
   }
-  
+
   PickerDocument _document;
   PickerDocument get document {
     if (_document == null) {
-      _document = new PickerDocument(jsObject['Document']);   
+      _document = new PickerDocument(jsObject['Document']);
     }
     return _document;
   }
-  
+
   PickerFeature _feature;
   PickerFeature get feature {
     if (_feature == null) {
-      _feature = new PickerFeature(jsObject['Feature']);   
+      _feature = new PickerFeature(jsObject['Feature']);
     }
     return _feature;
   }
-  
+
   ViewId _viewId;
   ViewId get viewId {
     if (_viewId == null) {
@@ -288,11 +308,12 @@ class GooglePicker {
     }
     return _viewId;
   }
-  
+
   JsFunction get _pickerBuilderConstructor => jsObject['PickerBuilder'];
   JsFunction get _pickerViewConstructor => jsObject['View'];
+  JsFunction get _pickerDocsViewConstructor => jsObject['DocsView'];
 
-  
+
   GooglePicker(this.jsObject);
 }
 
@@ -300,12 +321,10 @@ GooglePicker _picker;
 
 Future<GooglePicker> loadPicker(Gapi gapi) {
   if (_picker == null) {
-    return gapi.load('picker')
-        .then((_) {
-          _picker = new GooglePicker(context['google']['picker']);
-          return _picker;
-        });
+    return gapi.load('picker').then((_) {
+      _picker = new GooglePicker(context['google']['picker']);
+      return _picker;
+    });
   }
   return new Future.sync(() => _picker);
 }
-

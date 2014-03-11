@@ -21,25 +21,27 @@
     </form>
     <form role="form" class="app-auth hidden">
       <h2>Auth</h2>
-       <div class="checkbox">
-          <label> <input type="checkbox" class="app-autoauth">Authorized on start
-          </label>
-        </div>
+      <div class="checkbox">
+        <label> <input type="checkbox" class="app-autoauth">Authorized
+          on start
+        </label>
+      </div>
       <p>
         Make sure you have created a project in your <a
           href="https://console.developers.google.com/">developer
           console</a>
       </p>
-        <div class="form-group">
+      <div class="form-group">
         <label for="appInputClientId">CLIENT ID</label> <input
           class="form-control" id="appInputClientId"
           placeholder="Enter client id from developer console">
       </div>
-   
-       <div class="checkbox">
-          <label> <input type="checkbox" class="app-approval-prompt">Force approval prompt
-          </label>
-        </div>
+
+      <div class="checkbox">
+        <label> <input type="checkbox"
+          class="app-approval-prompt">Force approval prompt
+        </label>
+      </div>
       <div class="form-group">
         <button class="btn btn-primary app-authorize">Authorize</button>
       </div>
@@ -54,19 +56,30 @@
           href="https://console.developers.google.com/">developer
           console</a>
       </p>
-     
+
       <div class="form-group">
         <label for="appInputDeveloperKey">DEVELOPER KEY</label> <input
           class="form-control" id="appInputDeveloperKey"
           placeholder="Your developer key from developer console">
       </div>
-      
-       <div class="form-group">
-        <label for="appInputMimeTypes">mime types (comma separated - plain/text)</label> <input
-          class="form-control" id="appInputMimeTypes"
-          placeholder="The mime types to open">
+
+      <div class="form-group">
+        <label for="appInputMimeTypes">mime types (comma
+          separated - plain/text)</label> <input class="form-control"
+          id="appInputMimeTypes" placeholder="The mime types to open">
       </div>
-      
+
+      <div class="checkbox">
+        <label> <input type="checkbox"
+          id="appInputIncludeFolders">Include folders
+        </label>
+      </div>
+      <div class="checkbox">
+        <label> <input type="checkbox"
+          id="appInputSelectFolderEnabled">Select folder enabled
+        </label>
+      </div>
+
       <div class="form-group">
         <button class="btn btn-primary app-pick">Pick</button>
       </div>

@@ -26,34 +26,57 @@ String AUTH_APPROVAL_PROMPT = 'auth_approval_prompt'; // boolean
 String CLIEND_ID_KEY = 'client_id';
 String DEVELOPER_KEY_KEY = 'developer_key';
 String MIME_TYPES_KEY = 'mime_types';
+String SELECT_FOLDER_ENABLED_KEY = 'select_folder_enabled';
+String INCLUDE_FOLDERS_KEY = 'include_folders';
 
 InputElement developerKeyInput;
 Element pickResult;
 String _authToken;
 InputElement mimeTypesInput;
+
 void _pick() {
   String mimeTypesText = mimeTypesInput.value;
   storageSet(MIME_TYPES_KEY, mimeTypesText);
- 
-   
+
+
+
   String developerKey = developerKeyInput.value;
   storageSet(DEVELOPER_KEY_KEY, developerKey);
 
   PickerBuilder builder = new PickerBuilder(gpicker);
- 
-  PickerView pickerView = new PickerView(gpicker, gpicker.viewId.DOCS);
+
+  PickerView pickerView;
+
+  bool selectFolderEnabled = storageGet(SELECT_FOLDER_ENABLED_KEY) ==
+      true.toString();
+  bool includeFolders = storageGet(INCLUDE_FOLDERS_KEY) ==
+        true.toString();
+  
+  print('selectFolderEnbled: $selectFolderEnabled');
+  print('includeFolders: $includeFolders');
+  // use docs view for folder
+  if (selectFolderEnabled || includeFolders) {
+    PickerDocsView pickerDocsView = new PickerDocsView(gpicker,
+        gpicker.viewId.DOCS);
+    pickerDocsView.selectFolderEnabled = true;
+    pickerDocsView.includeFolders = true;
+    pickerView = pickerDocsView;
+  } else {
+    pickerView = new PickerView(gpicker, gpicker.viewId.DOCS);
+  }
   List<String> mimeTypes = mimeTypesText.split(',');
-    if (mimeTypes.length >= 1 && mimeTypes[0].length > 0) {
-      pickerView.mimeTypes = mimeTypes;
-    }
+  if (mimeTypes.length >= 1 && mimeTypes[0].length > 0) {
+    pickerView.mimeTypes = mimeTypes;
+  }
+
   builder.addView(pickerView);
-           
+
   builder.developerKey = developerKey;
   builder.oauthToken = _authToken;
   Picker uiPicker = builder.build();
   uiPicker.pick().then((PickerDataDocuments docs) {
     pickResult.innerHtml = docs.toString();
-    
+
     //pickResult.innerHtml = docs[0].id;
   });
 }
@@ -63,11 +86,29 @@ void pickerMain(String authToken) {
   Element pickerForm = querySelector('form.app-picker');
   pickResult = pickerForm.querySelector('.app-result');
   pickerForm.classes.remove('hidden');
-  developerKeyInput = pickerForm.querySelector(
-      'input#appInputDeveloperKey');
-  mimeTypesInput = pickerForm.querySelector(
-  'input#appInputMimeTypes');
+  developerKeyInput = pickerForm.querySelector('input#appInputDeveloperKey');
+  mimeTypesInput = pickerForm.querySelector('input#appInputMimeTypes');
   Element pickButton = pickerForm.querySelector('button.app-pick');
+
+  CheckboxInputElement selectFolderEnabledInput = pickerForm.querySelector(
+      '#appInputSelectFolderEnabled');
+  bool selectFolderEnabled = storageGet(SELECT_FOLDER_ENABLED_KEY) ==
+      true.toString();
+  selectFolderEnabledInput.checked = selectFolderEnabled;
+  selectFolderEnabledInput.onChange.listen((_) {
+    storageSet(SELECT_FOLDER_ENABLED_KEY,
+        selectFolderEnabledInput.checked.toString());
+  });
+  
+  CheckboxInputElement includeFoldersInput = pickerForm.querySelector(
+       '#appInputIncludeFolders');
+   bool includeFolders = storageGet(INCLUDE_FOLDERS_KEY) ==
+       true.toString();
+   includeFoldersInput.checked = includeFolders;
+   includeFoldersInput.onChange.listen((_) {
+     storageSet(INCLUDE_FOLDERS_KEY,
+                includeFoldersInput.checked.toString());
+   });
 
   developerKeyInput.value = storageGet(DEVELOPER_KEY_KEY);
   mimeTypesInput.value = storageGet(MIME_TYPES_KEY);
@@ -165,5 +206,5 @@ void main() {
   loadGapiResult = loadGapiForm.querySelector('.app-result');
 
   _loadPicker();
-  
+
 }
