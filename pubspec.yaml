@@ -4,6 +4,6 @@ dependencies:
   bootstrap_for_pub: any
   browser: any
   tekartik_google_jsapi:
-    git: https://github.com/alextekartik/google-jsapi.dart.git
+    git: https://github.com/alextekartik/google-jsapi.dart
 dev_dependencies:
   unittest: any
