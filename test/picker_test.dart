@@ -1,8 +1,10 @@
+@TestOn("browser")
+
 library picker_test;
 
 import 'dart:async';
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 
 import 'package:tekartik_google_jsapi_picker/picker.dart';
 import 'package:tekartik_google_jsapi/google_jsapi.dart';
@@ -61,7 +63,8 @@ void pickerMain() {
   /**
      * test to skip
      */
-  skip_test('pick', () {
+  /*
+  test('pick', () {
 
     return gapi.auth.authorize(CLIENT_ID, [GooglePicker.SCOPE_DRIVE_APP_FILE]
         ).then((String oauthToken) {
@@ -75,5 +78,6 @@ void pickerMain() {
       });
     });
   });
+  */
 
 }

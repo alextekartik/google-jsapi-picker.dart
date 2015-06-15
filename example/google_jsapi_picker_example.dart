@@ -21,9 +21,9 @@ void storageSet(String key, String value) {
   }
 }
 
-String AUTH_AUTOAUTH = 'auth_autoauth'; // boolean
+String AUTH_AUTO_AUTH = 'auth_autoauth'; // boolean
 String AUTH_APPROVAL_PROMPT = 'auth_approval_prompt'; // boolean
-String CLIEND_ID_KEY = 'client_id';
+String CLIENT_ID_KEY = 'client_id';
 String DEVELOPER_KEY_KEY = 'developer_key';
 String MIME_TYPES_KEY = 'mime_types';
 String SELECT_FOLDER_ENABLED_KEY = 'select_folder_enabled';
@@ -129,7 +129,7 @@ void _authorize() {
     authorizeResult.innerHtml = 'Missing CLIENT ID';
     return;
   }
-  storageSet(CLIEND_ID_KEY, clientId);
+  storageSet(CLIENT_ID_KEY, clientId);
 
   String approvalPrompt = storageGet(AUTH_APPROVAL_PROMPT);
   List<String> scopes = [GooglePicker.SCOPE_DRIVE_APP_FILE];
@@ -152,7 +152,7 @@ void authMain() {
   CheckboxInputElement autoAuthCheckbox = authForm.querySelector('.app-autoauth'
       );
 
-  clientIdInput.value = storageGet(CLIEND_ID_KEY);
+  clientIdInput.value = storageGet(CLIENT_ID_KEY);
 
   String approvalPrompt = storageGet(AUTH_APPROVAL_PROMPT);
 
@@ -172,15 +172,15 @@ void authMain() {
   });
 
 
-  bool autoauth = storageGet(AUTH_AUTOAUTH) == true.toString();
+  bool autoAuth = storageGet(AUTH_AUTO_AUTH) == true.toString();
 
-  autoAuthCheckbox.checked = autoauth;
-  if (autoauth) {
+  autoAuthCheckbox.checked = autoAuth;
+  if (autoAuth) {
     _authorize();
   }
 
   autoAuthCheckbox.onChange.listen((_) {
-    storageSet(AUTH_AUTOAUTH, autoAuthCheckbox.checked.toString());
+    storageSet(AUTH_AUTO_AUTH, autoAuthCheckbox.checked.toString());
   });
 }
 
