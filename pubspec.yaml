@@ -1,4 +1,5 @@
 name: tekartik_google_jsapi_picker
+version: 0.0.2
 description: file picker api
 dependencies:
   browser: any

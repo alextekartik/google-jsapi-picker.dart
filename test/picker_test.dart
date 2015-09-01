@@ -1,5 +1,4 @@
-@TestOn("browser")
-
+@TestOn("browser && !content-shell")
 library picker_test;
 
 import 'dart:async';
@@ -8,18 +7,15 @@ import 'package:test/test.dart';
 
 import 'package:tekartik_google_jsapi_picker/picker.dart';
 import 'package:tekartik_google_jsapi/google_jsapi.dart';
+import 'package:tekartik_utils/js_utils.dart';
 import 'test_config.dart';
 
-import 'package:tekartik_google_jsapi/js_utils.dart';
 
 Gapi gapi;
-Future<Gapi> testLoadGapi() {
-  return loadGapi().then((Gapi _gapi) {
-    gapi = _gapi;
-    return gapi;
-  });
+Future<Gapi> testLoadGapi() async {
+  gapi = await loadGapi();
+  return gapi;
 }
-
 
 void main() {
 

@@ -1,10 +1,8 @@
 library all_test_browser;
 
-import 'package:unittest/html_config.dart';
-import 'all_test.dart' as all_test;
+import 'picker_test.dart' as picker_test;
 
 main() {
-  useHtmlConfiguration();
-  all_test.main();
+  picker_test.main();
 }
 
