@@ -1,5 +1,5 @@
 name: tekartik_google_jsapi_picker
-version: 0.0.2
+version: 0.1.0
 description: file picker api
 dependencies:
   browser: any
@@ -8,3 +8,6 @@ dependencies:
 dev_dependencies:
   bootstrap: any
   test: any
+dependency_overrides:
+#  tekartik_google_jsapi:
+#    path: ../google-jsapi.dart

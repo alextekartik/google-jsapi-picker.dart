@@ -6,7 +6,8 @@ import 'dart:async';
 import 'package:test/test.dart';
 
 import 'package:tekartik_google_jsapi_picker/picker.dart';
-import 'package:tekartik_google_jsapi/google_jsapi.dart';
+import 'package:tekartik_google_jsapi/gapi.dart';
+import 'package:tekartik_google_jsapi/gapi_auth.dart';
 import 'package:tekartik_utils/js_utils.dart';
 import 'test_config.dart';
 
@@ -44,8 +45,9 @@ void pickerMain() {
     expect(gpicker.document.URL, 'url');
   });
 
-  test('picker', () {
-    return gapi.auth.authorize(CLIENT_ID, [GooglePicker.SCOPE_DRIVE_APP_FILE]
+  test('picker', () async {
+    GapiAuth gapiAuth = await loadGapiAuth(gapi);
+    return gapiAuth.authorize(CLIENT_ID, [GooglePicker.SCOPE_DRIVE_APP_FILE]
         ).then((String oauthToken) {
       PickerBuilder builder = new PickerBuilder(gpicker);
       builder.addViewId(gpicker.viewId.PHOTOS);

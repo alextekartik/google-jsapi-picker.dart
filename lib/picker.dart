@@ -3,7 +3,7 @@ library gapi_picker;
 import 'dart:async';
 import 'dart:js';
 
-import 'package:tekartik_google_jsapi/google_jsapi.dart';
+import 'package:tekartik_google_jsapi/gapi.dart';
 
 // https://developers.google.com/picker/docs/results
 
