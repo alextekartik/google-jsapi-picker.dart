@@ -1,77 +1,80 @@
 library google_jsapi_example;
 
-import 'dart:html';
-import 'package:tekartik_google_jsapi/gapi.dart';
-import 'package:tekartik_google_jsapi/gapi_auth.dart';
-import 'package:tekartik_google_jsapi_picker/picker.dart';
 import 'dart:async';
+import 'dart:html';
 
-GapiAuth gapiAuth;
+import 'package:googleapis_auth/auth_browser.dart';
+import 'package:synchronized/synchronized.dart';
+import 'package:tekartik_browser_utils/browser_utils_import.dart';
+import 'package:tekartik_google_jsapi/gapi.dart';
+import 'package:tekartik_google_jsapi/gapi_auth2.dart';
+import 'package:tekartik_google_jsapi_picker/picker.dart';
+
+import 'test_config.dart';
+import 'test_setup.dart';
+
+GapiAuth2 gapiAuth;
 GooglePicker gpicker;
 
 Storage storage = window.localStorage;
 
-String _STORAGE_KEY_PREF = 'com.tekartik.google_jsapi_picker_example';
-dynamic storageGet(String key) {
-  return storage['$_STORAGE_KEY_PREF.$key'];
+String storageKeyPref = 'com.tekartik.google_jsapi_picker_example';
+
+String storageGet(String key) {
+  return storage['$storageKeyPref.$key'];
 }
 
 void storageSet(String key, String value) {
+  var prefKey = '$storageKeyPref.$key';
   if (value == null) {
-    storage.remove(key);
+    storage.remove(prefKey);
   } else {
-    storage['$_STORAGE_KEY_PREF.$key'] = value;
+    storage[prefKey] = value;
   }
 }
 
-String AUTH_AUTO_AUTH = 'auth_autoauth'; // boolean
-String AUTH_APPROVAL_PROMPT = 'auth_approval_prompt'; // boolean
-String CLIENT_ID_KEY = 'client_id';
-String DEVELOPER_KEY_KEY = 'developer_key';
-String MIME_TYPES_KEY = 'mime_types';
-String SELECT_FOLDER_ENABLED_KEY = 'select_folder_enabled';
-String INCLUDE_FOLDERS_KEY = 'include_folders';
+String appAuthAutoAuth = 'auth_autoauth'; // boolean
+String appAuthApprovalPromptKey = 'auth_approval_prompt'; // boolean
+String appMimeTypesKey = 'mime_types';
+String selectFolderEnabledKey = 'select_folder_enabled';
+String includeFoldersKey = 'include_folders';
 
-InputElement developerKeyInput;
 Element pickResult;
 String _authToken;
 InputElement mimeTypesInput;
 
 void _pick() {
   String mimeTypesText = mimeTypesInput.value;
-  storageSet(MIME_TYPES_KEY, mimeTypesText);
+  storageSet(appMimeTypesKey, mimeTypesText);
 
-  String developerKey = developerKeyInput.value;
-  storageSet(DEVELOPER_KEY_KEY, developerKey);
-
-  PickerBuilder builder = new PickerBuilder(gpicker);
+  PickerBuilder builder = PickerBuilder(gpicker);
 
   PickerView pickerView;
 
   bool selectFolderEnabled =
-      storageGet(SELECT_FOLDER_ENABLED_KEY) == true.toString();
-  bool includeFolders = storageGet(INCLUDE_FOLDERS_KEY) == true.toString();
+      storageGet(selectFolderEnabledKey) == true.toString();
+  bool includeFolders = storageGet(includeFoldersKey) == true.toString();
 
   print('selectFolderEnbled: $selectFolderEnabled');
   print('includeFolders: $includeFolders');
   // use docs view for folder
   if (selectFolderEnabled || includeFolders) {
     PickerDocsView pickerDocsView =
-        new PickerDocsView(gpicker, gpicker.viewId.DOCS);
+        PickerDocsView(gpicker, gpicker.viewId.docs);
     pickerDocsView.selectFolderEnabled = true;
     pickerDocsView.includeFolders = true;
     pickerView = pickerDocsView;
   } else {
-    pickerView = new PickerView(gpicker, gpicker.viewId.DOCS);
+    pickerView = PickerView(gpicker, gpicker.viewId.docs);
   }
   List<String> mimeTypes = mimeTypesText.split(',');
-  if (mimeTypes.length >= 1 && mimeTypes[0].length > 0) {
+  if (mimeTypes.isNotEmpty && mimeTypes[0].isNotEmpty) {
     pickerView.mimeTypes = mimeTypes;
   }
 
   builder.addView(pickerView);
 
-  builder.developerKey = developerKey;
+  builder.developerKey = appOptions.developerKey;
   builder.oauthToken = _authToken;
   Picker uiPicker = builder.build();
   uiPicker.pick().then((PickerDataDocuments docs) {
@@ -82,35 +85,36 @@ void _pick() {
 }
 
 void pickerMain(String authToken) {
+  authorizeResult.innerHtml = 'Authorize token $authToken';
+  print('token: $authToken');
   _authToken = authToken;
 
   Element pickerForm = querySelector('form.app-picker');
   pickResult = pickerForm.querySelector('.app-result');
   pickerForm.classes.remove('hidden');
-  developerKeyInput = pickerForm.querySelector('input#appInputDeveloperKey');
-  mimeTypesInput = pickerForm.querySelector('input#appInputMimeTypes');
+  mimeTypesInput =
+      pickerForm.querySelector('input#appInputMimeTypes') as InputElement;
   Element pickButton = pickerForm.querySelector('button.app-pick');
 
-  CheckboxInputElement selectFolderEnabledInput =
-      pickerForm.querySelector('#appInputSelectFolderEnabled');
+  final selectFolderEnabledInput = pickerForm
+      .querySelector('#appInputSelectFolderEnabled') as CheckboxInputElement;
   bool selectFolderEnabled =
-      storageGet(SELECT_FOLDER_ENABLED_KEY) == true.toString();
+      storageGet(selectFolderEnabledKey) == true.toString();
   selectFolderEnabledInput.checked = selectFolderEnabled;
   selectFolderEnabledInput.onChange.listen((_) {
     storageSet(
-        SELECT_FOLDER_ENABLED_KEY, selectFolderEnabledInput.checked.toString());
+        selectFolderEnabledKey, selectFolderEnabledInput.checked.toString());
   });
 
-  CheckboxInputElement includeFoldersInput =
-      pickerForm.querySelector('#appInputIncludeFolders');
-  bool includeFolders = storageGet(INCLUDE_FOLDERS_KEY) == true.toString();
+  final includeFoldersInput = pickerForm
+      .querySelector('#appInputIncludeFolders') as CheckboxInputElement;
+  bool includeFolders = storageGet(includeFoldersKey) == true.toString();
   includeFoldersInput.checked = includeFolders;
   includeFoldersInput.onChange.listen((_) {
-    storageSet(INCLUDE_FOLDERS_KEY, includeFoldersInput.checked.toString());
+    storageSet(includeFoldersKey, includeFoldersInput.checked.toString());
   });
 
-  developerKeyInput.value = storageGet(DEVELOPER_KEY_KEY);
-  mimeTypesInput.value = storageGet(MIME_TYPES_KEY);
+  mimeTypesInput.value = storageGet(appMimeTypesKey);
 
   pickButton.onClick.listen((Event event) {
     event.preventDefault();
@@ -119,66 +123,74 @@ void pickerMain(String authToken) {
 }
 
 Element authorizeResult;
-InputElement clientIdInput;
+BrowserOAuth2Flow auth2flow;
+AppOptions appOptions;
+final _setupLock = Lock();
 
-void _authorize() {
-  String clientId = clientIdInput.value;
-  if (clientId.length < 1) {
-    authorizeResult.innerHtml = 'Missing CLIENT ID';
-    return;
+Future configSetup() async {
+  if (auth2flow == null) {
+    await _setupLock.synchronized(() async {
+      if (auth2flow == null) {
+        appOptions = await setup();
+
+        void _errorSetup() {
+          authorizeResult.innerText = '''
+ERROR: Missing clientId, clientSecret or developerKey
+Create local.config.yaml from sample.local.config.yaml''';
+        }
+
+        String clientId = appOptions?.clientId;
+        String clientSecret = appOptions?.clientSecret;
+        if (clientId?.isNotEmpty != true ||
+            clientSecret?.isNotEmpty != true ||
+            appOptions.developerKey?.isNotEmpty != true) {
+          _errorSetup();
+          return;
+        }
+
+        var authClientId =
+            ClientId(appOptions.clientId, appOptions.clientSecret);
+        List<String> scopes = [GooglePicker.scopeDriveAppFile];
+
+        auth2flow?.close();
+        auth2flow = await createImplicitBrowserFlow(authClientId, scopes);
+      }
+    });
   }
-  storageSet(CLIENT_ID_KEY, clientId);
+}
 
-  String approvalPrompt = storageGet(AUTH_APPROVAL_PROMPT);
-  List<String> scopes = [GooglePicker.SCOPE_DRIVE_APP_FILE];
-  gapiAuth
-      .authorize(clientId, scopes, approvalPrompt: approvalPrompt)
-      .then((String oauthToken) {
-    authorizeResult.innerHtml =
-        "client id '$clientId' authorized for '$scopes'";
-    pickerMain(oauthToken);
-  });
+Future _authorize({bool auto}) async {
+  auto ??= false;
+  await configSetup();
+
+  var result = await auth2flow.runHybridFlow(immediate: auto);
+  var oauthToken = result.credentials.accessToken.data;
+  pickerMain(oauthToken);
 }
 
 void authMain() {
   Element authForm = querySelector('form.app-auth');
   authForm.classes.remove('hidden');
   Element authorizeButton = authForm.querySelector('button.app-authorize');
-  clientIdInput = authForm.querySelector('input#appInputClientId');
 
   authorizeResult = authForm.querySelector('.app-result');
-  CheckboxInputElement approvalPromptCheckbox =
-      authForm.querySelector('.app-approval-prompt');
-  CheckboxInputElement autoAuthCheckbox =
-      authForm.querySelector('.app-autoauth');
-
-  clientIdInput.value = storageGet(CLIENT_ID_KEY);
-
-  String approvalPrompt = storageGet(AUTH_APPROVAL_PROMPT);
-
-  approvalPromptCheckbox.checked =
-      (approvalPrompt == GapiAuth.APPROVAL_PROMPT_FORCE);
+  final autoAuthCheckbox =
+      authForm.querySelector('.app-autoauth') as CheckboxInputElement;
 
   authorizeButton.onClick.listen((Event event) {
     event.preventDefault();
     _authorize();
   });
 
-  approvalPromptCheckbox.onChange.listen((_) {
-    approvalPrompt =
-        approvalPromptCheckbox.checked ? GapiAuth.APPROVAL_PROMPT_FORCE : null;
-    storageSet(AUTH_APPROVAL_PROMPT, approvalPrompt);
-  });
-
-  bool autoAuth = storageGet(AUTH_AUTO_AUTH) == true.toString();
+  bool autoAuth = storageGet(appAuthAutoAuth) == true.toString();
 
   autoAuthCheckbox.onChange.listen((_) {
-    storageSet(AUTH_AUTO_AUTH, autoAuthCheckbox.checked.toString());
+    storageSet(appAuthAutoAuth, autoAuthCheckbox.checked.toString());
   });
 
   autoAuthCheckbox.checked = autoAuth;
   if (autoAuth) {
-    _authorize();
+    _authorize(auto: true);
   }
 }
 
@@ -188,8 +200,6 @@ Future _loadPicker() async {
   loadGapiResult.innerHtml = 'loading Gapi...';
   try {
     Gapi gapi = await loadGapiPlatform();
-    loadGapiResult.innerHtml = 'loading GapiAuth...';
-    gapiAuth = await loadGapiAuth(gapi);
     loadGapiResult.innerHtml = 'loading GooglePicker...';
     gpicker = await loadPicker(gapi);
     loadGapiResult.innerHtml = 'GooglePicker loaded';
@@ -200,7 +210,7 @@ Future _loadPicker() async {
   authMain();
 }
 
-main() async {
+Future main() async {
   Element loadGapiForm = querySelector('form.app-gapi');
   loadGapiResult = loadGapiForm.querySelector('.app-result');
 

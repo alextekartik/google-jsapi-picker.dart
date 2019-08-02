@@ -7,3 +7,6 @@ tmp.*
 build
 .idea/
 .pub/
+
+local.*
+.dart_tool/
