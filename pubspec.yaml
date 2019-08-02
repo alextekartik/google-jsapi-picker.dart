@@ -1,13 +1,31 @@
 name: tekartik_google_jsapi_picker
-version: 0.1.0
+version: 0.2.0
 description: file picker api
+
+environment:
+  sdk: '>=2.4.0-dev <3.0.0'
+
 dependencies:
-  browser: any
   tekartik_google_jsapi:
-    git: https://github.com/alextekartik/google-jsapi.dart
+    git:
+      url: git://github.com/alextekartik/google-jsapi.dart
+      ref: dart2
+    version: '>=0.2.0'
+
 dev_dependencies:
-  bootstrap: any
+  tekartik_bootstrap:
+    git:
+      url: git://github.com/tekartik/bootstrap.dart
+      ref: dart2
+    version: '>=0.3.0'
+  build_runner:
+  build_test:
+  build_web_compilers:
   test: any
-dependency_overrides:
-#  tekartik_google_jsapi:
-#    path: ../google-jsapi.dart
+  process_run: '>=0.10.2'
+  googleapis_auth: '>=0.2.10'
+  chrome_travis:
+    git:
+      url: git://github.com/tekartik/chrome_travis.dart
+      ref: dart2
+    version: '>=0.1.4'

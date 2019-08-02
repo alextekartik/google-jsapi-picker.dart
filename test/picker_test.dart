@@ -1,4 +1,4 @@
-@TestOn("browser && !content-shell")
+@TestOn("browser")
 library picker_test;
 
 import 'dart:async';
@@ -8,9 +8,9 @@ import 'package:test/test.dart';
 import 'package:tekartik_google_jsapi_picker/picker.dart';
 import 'package:tekartik_google_jsapi/gapi.dart';
 import 'package:tekartik_google_jsapi/gapi_auth.dart';
-import 'package:tekartik_utils/js_utils.dart';
+import 'package:tekartik_browser_utils/js_utils.dart';
 import 'test_config.dart';
-
+import 'test_setup.dart';
 
 Gapi gapi;
 Future<Gapi> testLoadGapi() async {
@@ -19,15 +19,16 @@ Future<Gapi> testLoadGapi() async {
 }
 
 void main() {
-
   group('picker', () {
     pickerMain();
   });
 }
 
 GooglePicker gpicker;
+AppOptions options;
 void pickerMain() {
-  setUp(() {
+  setUp(() async {
+    options = await setup();
     return testLoadGapi().then((Gapi gapi) {
       return loadPicker(gapi).then((GooglePicker _picker) {
         gpicker = _picker;
@@ -39,28 +40,29 @@ void pickerMain() {
   test('constants', () {
     Map pickerMap = jsObjectAsMap(gpicker.jsObject);
     print(pickerMap['ViewId']);
-    expect(gpicker.response.ACTION, 'action');
-    expect(gpicker.action.PICKED, 'picked');
-    expect(gpicker.response.DOCUMENTS, 'docs');
-    expect(gpicker.document.URL, 'url');
+    expect(gpicker.response.action, 'action');
+    expect(gpicker.action.picked, 'picked');
+    expect(gpicker.response.documents, 'docs');
+    expect(gpicker.document.url, 'url');
   });
 
   test('picker', () async {
-    GapiAuth gapiAuth = await loadGapiAuth(gapi);
-    return gapiAuth.authorize(CLIENT_ID, [GooglePicker.SCOPE_DRIVE_APP_FILE]
-        ).then((String oauthToken) {
-      PickerBuilder builder = new PickerBuilder(gpicker);
-      builder.addViewId(gpicker.viewId.PHOTOS);
-      builder.developerKey = DEVELOPER_KEY;
-      builder.oauthToken = DEVELOPER_KEY;
-      Picker uiPicker = builder.build();
-      uiPicker.visible = true;
-    });
-  });
+    if (options != null) {
+      GapiAuth gapiAuth = await loadGapiAuth(gapi);
+      return gapiAuth
+          .authorize(options.clientId, [GooglePicker.scopeDriveAppFile]).then(
+              (String oauthToken) {
+        PickerBuilder builder = PickerBuilder(gpicker);
+        builder.addViewId(gpicker.viewId.photos);
+        builder.developerKey = options.developerKey;
+        builder.oauthToken = null; // optopnnull;
+        Picker uiPicker = builder.build();
+        uiPicker.visible = true;
+      });
+    }
+  }, skip: true);
 
-  /**
-     * test to skip
-     */
+  /// test to skip
   /*
   test('pick', () {
 
@@ -77,5 +79,4 @@ void pickerMain() {
     });
   });
   */
-
 }

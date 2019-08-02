@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- include the stylesheets -->
-  <link rel="stylesheet" href="packages/bootstrap/css/bootstrap.css">
-  <link rel="stylesheet" href="packages/bootstrap/css/bootstrap-theme.css">
+  <link rel="stylesheet" href="packages/tekartik_bootstrap_asset/3.3.7/css/bootstrap.css">
+  <link rel="stylesheet" href="packages/tekartik_bootstrap_asset/3.3.7/css/bootstrap-theme.css">
 <title>Google jsapi picker example</title>
 </head>
 
@@ -25,22 +25,7 @@
           on start
         </label>
       </div>
-      <p>
-        Make sure you have created a project in your <a
-          href="https://console.developers.google.com/">developer
-          console</a>. Ensure the APIs 'Drive API', 'Drive SDK' and 'Google Picker API' have been enabled for this project
-      </p>
-      <div class="form-group">
-        <label for="appInputClientId">CLIENT ID</label> <input
-          class="form-control" id="appInputClientId"
-          placeholder="Enter client id from developer console">
-      </div>
 
-      <div class="checkbox">
-        <label> <input type="checkbox"
-          class="app-approval-prompt">Force approval prompt
-        </label>
-      </div>
       <div class="form-group">
         <button class="btn btn-primary app-authorize">Authorize</button>
       </div>
@@ -57,14 +42,8 @@
       </p>
 
       <div class="form-group">
-        <label for="appInputDeveloperKey">DEVELOPER KEY</label> <input
-          class="form-control" id="appInputDeveloperKey"
-          placeholder="Your developer key from developer console">
-      </div>
-
-      <div class="form-group">
         <label for="appInputMimeTypes">mime types (comma
-          separated - plain/text)</label> <input class="form-control"
+          separated - plain/text, application/pdf, ...)</label> <input class="form-control"
           id="appInputMimeTypes" placeholder="The mime types to open">
       </div>
 
@@ -88,14 +67,11 @@
     </form>
   </div>
 
-  <script type="application/dart" src="google_jsapi_picker_example.dart"></script>
-  <!-- for this next line to work, your pubspec.yaml file must have a dependency on 'browser' -->
-  <script src="packages/browser/dart.js"></script>
-  <script src="packages/browser/interop.js"></script>
+  <script src="google_jsapi_picker_example.dart.js"></script>
 
 
   <!-- include the javascript -->
-  <script src="packages/bootstrap/jquery/jquery.js"></script>
-  <script src="packages/bootstrap/js/bootstrap.js"></script>
+  <script src="packages/tekartik_jquery_asset/3.1.1/jquery.js"></script>
+  <script src="packages/tekartik_bootstrap_asset/3.3.7/js/bootstrap.js"></script>
 </body>
 </html>
