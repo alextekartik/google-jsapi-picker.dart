@@ -9,3 +9,4 @@ build
 .pub/
 
 local.*
+.dart_tool/

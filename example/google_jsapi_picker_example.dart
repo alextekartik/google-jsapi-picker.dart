@@ -133,15 +133,18 @@ Future configSetup() async {
       if (auth2flow == null) {
         appOptions = await setup();
 
-        String clientId = appOptions.clientId;
-        String clientSecret = appOptions.clientSecret;
+        void _errorSetup() {
+          authorizeResult.innerText = '''
+ERROR: Missing clientId, clientSecret or developerKey
+Create local.config.yaml from sample.local.config.yaml''';
+        }
+
+        String clientId = appOptions?.clientId;
+        String clientSecret = appOptions?.clientSecret;
         if (clientId?.isNotEmpty != true ||
             clientSecret?.isNotEmpty != true ||
             appOptions.developerKey?.isNotEmpty != true) {
-          authorizeResult.innerHtml =
-              'Missing clientId, clientSecret or developerKey';
-          authorizeResult.innerHtml =
-              'Create local.config.yaml from sample.local.config.yaml';
+          _errorSetup();
           return;
         }
 
@@ -197,8 +200,6 @@ Future _loadPicker() async {
   loadGapiResult.innerHtml = 'loading Gapi...';
   try {
     Gapi gapi = await loadGapiPlatform();
-    loadGapiResult.innerHtml = 'loading GapiAuth...';
-    gapiAuth = await loadGapiAuth2(gapi);
     loadGapiResult.innerHtml = 'loading GooglePicker...';
     gpicker = await loadPicker(gapi);
     loadGapiResult.innerHtml = 'GooglePicker loaded';
