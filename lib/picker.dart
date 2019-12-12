@@ -24,7 +24,7 @@ class Picker {
 
   void _callback(JsObject jsData) {
     //print(jsObjectAsMap(jsData));
-    PickerData data = PickerData(picker, jsData);
+    final data = PickerData(picker, jsData);
     ctlr.add(data);
   }
 
@@ -39,7 +39,7 @@ class Picker {
     stream.listen((PickerData data) {
       // print(data);
       if (data.action == picker.action.cancel) {
-        completer.completeError(const GapiException("cancel"));
+        completer.completeError(const GapiException('cancel'));
       }
       if (data.action == picker.action.picked) {
         completer.complete(data.documents);
@@ -121,9 +121,9 @@ class PickerBuilder {
   }
 
   Picker build() {
-    Picker picker = Picker._(gpicker);
+    final picker = Picker._(gpicker);
     jsPickerBuilder.callMethod('setCallback', [picker._callback]);
-    JsObject jsPicker = jsPickerBuilder.callMethod('build') as JsObject;
+    final jsPicker = jsPickerBuilder.callMethod('build') as JsObject;
     picker._jsObject = jsPicker;
     return picker;
   }
@@ -182,9 +182,9 @@ class PickerDataDocuments {
 
   int get length => jsArray.length;
 
-  List asList() {
-    List<Map> docs = [];
-    for (int i = 0; i < length; i++) {
+  List<Map> asList() {
+    final docs = <Map>[];
+    for (var i = 0; i < length; i++) {
       docs.add(this[i].asMap());
     }
     return docs;
@@ -205,13 +205,8 @@ class PickerData {
   String get action => jsObject[picker.response.action] as String;
   PickerDataDocuments _documents;
 
-  PickerDataDocuments get documents {
-    if (_documents == null) {
-      _documents = PickerDataDocuments(
-          picker, jsObject[picker.response.documents] as JsArray);
-    }
-    return _documents;
-  }
+  PickerDataDocuments get documents => _documents ??= PickerDataDocuments(
+      picker, jsObject[picker.response.documents] as JsArray);
 
   @override
   String toString() {
@@ -280,7 +275,7 @@ class PickerResponse {
 }
 
 class PickerFeature {
-  JsObject _jsObject;
+  final _jsObject;
 
   PickerFeature(this._jsObject);
 
@@ -344,48 +339,27 @@ class GooglePicker {
 
   PickerAction _action;
 
-  PickerAction get action {
-    if (_action == null) {
-      _action = PickerAction(jsObject['Action'] as JsObject);
-    }
-    return _action;
-  }
+  PickerAction get action =>
+      _action ??= PickerAction(jsObject['Action'] as JsObject);
 
   PickerResponse _response;
 
-  PickerResponse get response {
-    if (_response == null) {
-      _response = PickerResponse(jsObject['Response'] as JsObject);
-    }
-    return _response;
-  }
+  PickerResponse get response =>
+      _response ??= PickerResponse(jsObject['Response'] as JsObject);
 
   PickerDocument _document;
 
-  PickerDocument get document {
-    if (_document == null) {
-      _document = PickerDocument(jsObject['Document'] as JsObject);
-    }
-    return _document;
-  }
+  PickerDocument get document =>
+      _document ??= PickerDocument(jsObject['Document'] as JsObject);
 
   PickerFeature _feature;
 
-  PickerFeature get feature {
-    if (_feature == null) {
-      _feature = PickerFeature(jsObject['Feature'] as JsObject);
-    }
-    return _feature;
-  }
+  PickerFeature get feature =>
+      _feature ??= PickerFeature(jsObject['Feature'] as JsObject);
 
   ViewId _viewId;
 
-  ViewId get viewId {
-    if (_viewId == null) {
-      _viewId = ViewId(jsObject['ViewId'] as JsObject);
-    }
-    return _viewId;
-  }
+  ViewId get viewId => _viewId ??= ViewId(jsObject['ViewId'] as JsObject);
 
   JsFunction get _pickerBuilderConstructor =>
       jsObject['PickerBuilder'] as JsFunction;

@@ -1,4 +1,4 @@
-@TestOn("browser")
+@TestOn('browser')
 library picker_test;
 
 import 'dart:async';
@@ -48,15 +48,15 @@ void pickerMain() {
 
   test('picker', () async {
     if (options != null) {
-      GapiAuth gapiAuth = await loadGapiAuth(gapi);
+      final gapiAuth = await loadGapiAuth(gapi);
       return gapiAuth
           .authorize(options.clientId, [GooglePicker.scopeDriveAppFile]).then(
               (String oauthToken) {
-        PickerBuilder builder = PickerBuilder(gpicker);
+        final builder = PickerBuilder(gpicker);
         builder.addViewId(gpicker.viewId.photos);
         builder.developerKey = options.developerKey;
         builder.oauthToken = null; // optopnnull;
-        Picker uiPicker = builder.build();
+        final uiPicker = builder.build();
         uiPicker.visible = true;
       });
     }
