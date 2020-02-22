@@ -1,5 +1,5 @@
 name: tekartik_google_jsapi_picker
-version: 0.2.0
+version: 0.2.1
 description: file picker api
 
 environment:
@@ -11,7 +11,10 @@ dependencies:
       url: git://github.com/alextekartik/google-jsapi.dart
       ref: dart2
     version: '>=0.2.0'
-
+  tekartik_common_utils:
+    git:
+      url: git://github.com/tekartik/common_utils.dart
+      ref: dart2
 dev_dependencies:
   tekartik_bootstrap:
     git:
