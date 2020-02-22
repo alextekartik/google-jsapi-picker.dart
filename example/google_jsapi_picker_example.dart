@@ -135,7 +135,7 @@ Future configSetup() async {
         void _errorSetup() {
           authorizeResult.innerText = '''
 ERROR: Missing clientId, clientSecret or developerKey
-Create local.config.yaml from sample.local.config.yaml''';
+Create local.config.yaml from sample.local.config.yaml ($appOptions)''';
         }
 
         final clientId = appOptions?.clientId;
