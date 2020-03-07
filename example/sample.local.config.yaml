@@ -1,6 +1,9 @@
 # Copy this file as "local.config.yaml" in the same folder (.gitignored)
 
 # The developer key needed for the picker API
-developerKey = [ENTER_YOUR_DEVELOPER_KEY];
+# Credentials/API Keys
+developerKey: [ENTER_YOUR_DEVELOPER_KEY]
 # The Client ID obtained from the Google Cloud Console.
-cliendId = [ENTER_YOUR_CLIENT_ID.apps.googleusercontent.com];
+# Credentials/OAuth 2.0 Client IDs
+clientId: [ENTER_YOUR_CLIENT_ID.apps.googleusercontent.com]
+clientSecret: [ENTER_YOUR_CLIENT_SECRET]

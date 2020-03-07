@@ -13,4 +13,11 @@ class AppOptions {
     clientId = map['clientId']?.toString();
     clientSecret = map['clientSecret']?.toString();
   }
+
+  @override
+  String toString() => {
+        'developerKey': developerKey,
+        'clientId': clientId,
+        'clientSecret': clientSecret
+      }.toString();
 }
