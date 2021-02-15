@@ -1,6 +1,7 @@
 name: tekartik_google_jsapi_picker
 version: 0.2.2
 description: file picker api
+publish_to: none
 
 environment:
   sdk: '>=2.10.0-0 <3.0.0'
