@@ -10,10 +10,10 @@ Future<AppOptions> setup() async {
 
   // Load client info
   try {
-    var sample = await client.read('sample.local.config.yaml');
+    var sample = await client.read(Uri.parse('sample.local.config.yaml'));
 
     try {
-      var local = await client.read('local.config.yaml');
+      var local = await client.read(Uri.parse('local.config.yaml'));
       var map = (loadYaml(local) as Map).cast<String, dynamic>();
       var options = AppOptions.fromMap(map);
       if (options.clientId == null) {
