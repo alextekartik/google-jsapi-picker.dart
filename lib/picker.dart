@@ -275,7 +275,7 @@ class PickerResponse {
 }
 
 class PickerFeature {
-  final _jsObject;
+  final JsObject _jsObject;
 
   PickerFeature(this._jsObject);
 
@@ -377,7 +377,8 @@ GooglePicker _picker;
 Future<GooglePicker> loadPicker(Gapi gapi) {
   if (_picker == null) {
     return gapi.load('picker').then((_) {
-      _picker = GooglePicker(context['google']['picker'] as JsObject);
+      _picker =
+          GooglePicker((context['google'] as JsObject)['picker'] as JsObject);
       return _picker;
     });
   }

@@ -8,7 +8,7 @@ Future main() async {
   print('http://localhost:8081/google_jsapi_picker_example.html');
   await shell.run('''
   
-  pub global run webdev serve example:8081 --live-reload --hostname 0.0.0.0
+  dart pub global run webdev serve example:8081 --auto=refresh --hostname 0.0.0.0
   
   ''');
 }

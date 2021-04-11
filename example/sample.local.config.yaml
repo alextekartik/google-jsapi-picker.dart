@@ -1,4 +1,5 @@
 # Copy this file as "local.config.yaml" in the same folder (.gitignored)
+# Enable Google Picker API and test port
 
 # The developer key needed for the picker API
 # Credentials/API Keys
