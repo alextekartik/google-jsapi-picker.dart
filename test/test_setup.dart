@@ -4,7 +4,7 @@ import 'package:yaml/yaml.dart';
 
 import 'test_config.dart';
 
-Future<AppOptions> setup() async {
+Future<AppOptions?> setup() async {
   // Load javascript
   var client = BrowserClient();
 

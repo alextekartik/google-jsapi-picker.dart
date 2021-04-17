@@ -4,24 +4,24 @@ description: file picker api
 publish_to: none
 
 environment:
-  sdk: '>=2.10.0-0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   tekartik_google_jsapi:
     git:
       url: git://github.com/alextekartik/google-jsapi.dart
-      ref: dart2
+      ref: null_safety
     version: '>=0.2.0'
   tekartik_common_utils:
     git:
       url: git://github.com/tekartik/common_utils.dart
-      ref: dart2
+      ref: null_safety
 dev_dependencies:
   dev_test:
   tekartik_bootstrap:
     git:
       url: git://github.com/tekartik/bootstrap.dart
-      ref: dart2
+      ref: null_safety
     version: '>=0.3.0'
   build_runner:
   build_test:
@@ -32,5 +32,5 @@ dev_dependencies:
   chrome_travis:
     git:
       url: git://github.com/tekartik/chrome_travis.dart
-      ref: dart2
+      ref: null_safety
     version: '>=0.1.4'

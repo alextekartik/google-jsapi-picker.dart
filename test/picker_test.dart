@@ -12,8 +12,8 @@ import 'package:tekartik_browser_utils/js_utils.dart';
 import 'test_config.dart';
 import 'test_setup.dart';
 
-Gapi gapi;
-Future<Gapi> testLoadGapi() async {
+Gapi? gapi;
+Future<Gapi?> testLoadGapi() async {
   gapi = await loadGapi();
   return gapi;
 }
@@ -24,12 +24,12 @@ void main() {
   });
 }
 
-GooglePicker gpicker;
-AppOptions options;
+GooglePicker? gpicker;
+AppOptions? options;
 void pickerMain() {
   setUp(() async {
     options = await setup();
-    return testLoadGapi().then((Gapi gapi) {
+    return testLoadGapi().then((Gapi? gapi) {
       return loadPicker(gapi).then((GooglePicker _picker) {
         gpicker = _picker;
         return gpicker;
@@ -38,23 +38,23 @@ void pickerMain() {
   });
 
   test('constants', () {
-    Map pickerMap = jsObjectAsMap(gpicker.jsObject);
+    Map pickerMap = jsObjectAsMap(gpicker!.jsObject)!;
     print(pickerMap['ViewId']);
-    expect(gpicker.response.action, 'action');
-    expect(gpicker.action.picked, 'picked');
-    expect(gpicker.response.documents, 'docs');
-    expect(gpicker.document.url, 'url');
+    expect(gpicker!.response.action, 'action');
+    expect(gpicker!.action.picked, 'picked');
+    expect(gpicker!.response.documents, 'docs');
+    expect(gpicker!.document.url, 'url');
   });
 
   test('picker', () async {
     if (options != null) {
       final gapiAuth = await loadGapiAuth(gapi);
       return gapiAuth
-          .authorize(options.clientId, [GooglePicker.scopeDriveAppFile]).then(
+          .authorize(options!.clientId!, [GooglePicker.scopeDriveAppFile]).then(
               (String oauthToken) {
         final builder = PickerBuilder(gpicker);
-        builder.addViewId(gpicker.viewId.photos);
-        builder.developerKey = options.developerKey;
+        builder.addViewId(gpicker!.viewId.photos);
+        builder.developerKey = options!.developerKey;
         builder.oauthToken = null; // optopnnull;
         final uiPicker = builder.build();
         uiPicker.visible = true;
