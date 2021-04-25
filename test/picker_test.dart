@@ -3,16 +3,17 @@ library picker_test;
 
 import 'dart:async';
 
-import 'package:test/test.dart';
-
-import 'package:tekartik_google_jsapi_picker/picker.dart';
+import 'package:tekartik_browser_utils/js_utils.dart';
 import 'package:tekartik_google_jsapi/gapi.dart';
 import 'package:tekartik_google_jsapi/gapi_auth.dart';
-import 'package:tekartik_browser_utils/js_utils.dart';
+import 'package:tekartik_google_jsapi_picker/picker.dart';
+import 'package:test/test.dart';
+
 import 'test_config.dart';
 import 'test_setup.dart';
 
 Gapi? gapi;
+
 Future<Gapi?> testLoadGapi() async {
   gapi = await loadGapi();
   return gapi;
@@ -26,6 +27,7 @@ void main() {
 
 GooglePicker? gpicker;
 AppOptions? options;
+
 void pickerMain() {
   setUp(() async {
     options = await setup();
