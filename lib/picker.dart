@@ -229,11 +229,11 @@ class ViewId {
 
   String? get docs => jsObject!['DOCS'] as String?;
 
-  @deprecated
+  @Deprecated('Use photos')
   // ignore: non_constant_identifier_names
   String? get PHOTOS => jsObject!['PHOTOS'] as String?;
 
-  @deprecated
+  @Deprecated('Use docs')
   // ignore: non_constant_identifier_names
   String? get DOCS => jsObject!['DOCS'] as String?;
 }
@@ -247,11 +247,11 @@ class PickerAction {
 
   String? get cancel => jsObject!['CANCEL'] as String?;
 
-  @deprecated
+  @Deprecated('Use picked')
   // ignore: non_constant_identifier_names
   String? get PICKED => jsObject!['PICKED'] as String?;
 
-  @deprecated
+  @Deprecated('Use cancel')
   // ignore: non_constant_identifier_names
   String? get CANCEL => jsObject!['CANCEL'] as String?;
 }
@@ -264,10 +264,10 @@ class PickerResponse {
   String? get action => jsObject!['ACTION'] as String?;
 
   String? get documents => jsObject!['DOCUMENTS'] as String?;
-  @deprecated
+  @Deprecated('Use action')
   // ignore: non_constant_identifier_names
   String? get ACTION => jsObject!['ACTION'] as String?;
-  @deprecated
+  @Deprecated('Use documents')
   // ignore: non_constant_identifier_names
   String? get DOCUMENTS => jsObject!['DOCUMENTS'] as String?;
 }
@@ -302,27 +302,27 @@ class PickerDocument {
 
   String? get name => jsObject!['NAME'] as String?;
 
-  @deprecated
+  @Deprecated('Use url')
   // ignore: non_constant_identifier_names
   String? get URL => jsObject!['URL'] as String?;
 
-  @deprecated
+  @Deprecated('Use description')
   // ignore: non_constant_identifier_names
   String? get DESCRIPTION => jsObject!['DESCRIPTION'] as String?;
 
-  @deprecated
+  @Deprecated('Use id')
   // ignore: non_constant_identifier_names
   String? get ID => jsObject!['ID'] as String?;
 
-  @deprecated
+  @Deprecated('Use mimeType')
   // ignore: non_constant_identifier_names
   String? get MIME_TYPE => jsObject!['MIME_TYPE'] as String?;
 
-  @deprecated
+  @Deprecated('Use version')
   // ignore: non_constant_identifier_names
   String? get VERSION => jsObject!['VERSION'] as String?;
 
-  @deprecated
+  @Deprecated('Use name')
   // ignore: non_constant_identifier_names
   String? get NAME => jsObject!['NAME'] as String?;
 }
@@ -330,7 +330,7 @@ class PickerDocument {
 class GooglePicker {
   static const String scopeDriveAppFile =
       'https://www.googleapis.com/auth/drive.file'; // files created/opened by the app
-  @deprecated
+  @Deprecated('Use scopeDriveAppFile')
   // ignore: constant_identifier_names
   static const String SCOPE_DRIVE_APP_FILE =
       'https://www.googleapis.com/auth/drive.file'; // files created/opened by the app
