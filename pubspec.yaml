@@ -9,19 +9,19 @@ environment:
 dependencies:
   tekartik_google_jsapi:
     git:
-      url: git://github.com/alextekartik/google-jsapi.dart
-      ref: null_safety
+      url: https://github.com/alextekartik/google-jsapi.dart
+      ref: dart2_3
     version: '>=0.2.0'
   tekartik_common_utils:
     git:
-      url: git://github.com/tekartik/common_utils.dart
-      ref: null_safety
+      url: https://github.com/tekartik/common_utils.dart
+      ref: dart2_3
 dev_dependencies:
   dev_test:
   tekartik_bootstrap:
     git:
-      url: git://github.com/tekartik/bootstrap.dart
-      ref: null_safety
+      url: https://github.com/tekartik/bootstrap.dart
+      ref: dart2_3
     version: '>=0.3.0'
   build_runner:
   build_test:
@@ -31,6 +31,6 @@ dev_dependencies:
   googleapis_auth: '>=0.2.10'
   chrome_travis:
     git:
-      url: git://github.com/tekartik/chrome_travis.dart
-      ref: null_safety
+      url: https://github.com/tekartik/chrome_travis.dart
+      ref: dart2_3
     version: '>=0.1.4'
