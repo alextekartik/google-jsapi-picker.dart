@@ -28,8 +28,8 @@ class Picker {
     ctlr.add(data);
   }
 
-  set visible(bool _visible) {
-    _jsObject!.callMethod('setVisible', [_visible]);
+  set visible(bool visible) {
+    _jsObject!.callMethod('setVisible', [visible]);
   }
 
   /// Return Future<null> on cancel
@@ -108,12 +108,12 @@ class PickerBuilder {
     jsPickerBuilder.callMethod('enableFeature', [feature]);
   }
 
-  set oauthToken(String? _oauthToken) {
-    jsPickerBuilder.callMethod('setOAuthToken', [_oauthToken]);
+  set oauthToken(String? oauthToken) {
+    jsPickerBuilder.callMethod('setOAuthToken', [oauthToken]);
   }
 
-  set developerKey(String? _developerKey) {
-    jsPickerBuilder.callMethod('setDeveloperKey', [_developerKey]);
+  set developerKey(String? developerKey) {
+    jsPickerBuilder.callMethod('setDeveloperKey', [developerKey]);
   }
 
   set selectableMimeTypes(List<String> mimeTypes) {
