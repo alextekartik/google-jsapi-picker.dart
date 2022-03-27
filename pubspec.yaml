@@ -16,7 +16,9 @@ dependencies:
     git:
       url: https://github.com/tekartik/common_utils.dart
       ref: dart2_3
+  http:
 dev_dependencies:
+  yaml:
   dev_test:
   tekartik_bootstrap:
     git:

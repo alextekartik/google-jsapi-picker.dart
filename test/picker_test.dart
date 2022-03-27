@@ -32,8 +32,8 @@ void pickerMain() {
   setUp(() async {
     options = await setup();
     return testLoadGapi().then((Gapi? gapi) {
-      return loadPicker(gapi).then((GooglePicker _picker) {
-        gpicker = _picker;
+      return loadPicker(gapi).then((GooglePicker picker) {
+        gpicker = picker;
         return gpicker;
       });
     });
