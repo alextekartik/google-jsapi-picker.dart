@@ -128,7 +128,7 @@ Future configSetup() async {
       if (auth2flow == null) {
         appOptions = await setup();
 
-        void _errorSetup() {
+        void errorSetup() {
           authorizeResult!.innerText = '''
 ERROR: Missing clientId, clientSecret or developerKey
 Create local.config.yaml from sample.local.config.yaml ($appOptions)''';
@@ -139,7 +139,7 @@ Create local.config.yaml from sample.local.config.yaml ($appOptions)''';
         if (clientId?.isNotEmpty != true ||
             clientSecret?.isNotEmpty != true ||
             appOptions!.developerKey?.isNotEmpty != true) {
-          _errorSetup();
+          errorSetup();
           return;
         }
 
