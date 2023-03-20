@@ -148,7 +148,7 @@ class PickerDataDocument {
   int? get version => jsObject[picker!.document.version!] as int?;
 
   Map asMap() {
-    var map = {};
+    var map = <String, Object?>{};
     if (url != null) {
       map['url'] = url;
     }
@@ -210,7 +210,7 @@ class PickerData {
 
   @override
   String toString() {
-    var map = {};
+    var map = <String, Object?>{};
     map['action'] = action;
     if (action == picker!.action.picked) {
       map['documents'] = documents.asList();
