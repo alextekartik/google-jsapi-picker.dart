@@ -12,6 +12,10 @@ import 'test_setup.dart';
 GapiAuth2? gapiAuth;
 GooglePicker? gpicker;
 
+Element? authorizeResult;
+AppOptions? appOptions;
+ClientId? authClientId;
+final _setupLock = Lock();
 Storage storage = window.localStorage;
 
 String storageKeyPref = 'com.tekartik.google_jsapi_picker_example';
@@ -117,15 +121,10 @@ void pickerMain(String authToken) {
   });
 }
 
-Element? authorizeResult;
-BrowserOAuth2Flow? auth2flow;
-AppOptions? appOptions;
-final _setupLock = Lock();
-
 Future configSetup() async {
-  if (auth2flow == null) {
+  if (authClientId == null) {
     await _setupLock.synchronized(() async {
-      if (auth2flow == null) {
+      if (authClientId == null) {
         appOptions = await setup();
 
         void errorSetup() {
@@ -143,12 +142,10 @@ Create local.config.yaml from sample.local.config.yaml ($appOptions)''';
           return;
         }
 
-        var authClientId =
+        authClientId =
             ClientId(appOptions!.clientId!, appOptions!.clientSecret);
-        final scopes = <String>[GooglePicker.scopeDriveAppFile];
 
-        auth2flow?.close();
-        auth2flow = await createImplicitBrowserFlow(authClientId, scopes);
+        // auth2flow = await createImplicitBrowserFlow(authClientId, scopes);
       }
     });
   }
@@ -158,8 +155,16 @@ Future _authorize({bool? auto}) async {
   auto ??= false;
   await configSetup();
 
-  var result = await auth2flow!.runHybridFlow(immediate: auto);
-  var oauthToken = result.credentials.accessToken.data;
+  final scopes = <String>[GooglePicker.scopeDriveAppFile];
+
+  var accessCredentials = await requestAccessCredentials(
+      clientId: authClientId!.identifier, scopes: scopes);
+  print('accessCredentials: $accessCredentials');
+  print('accessCredentials: ${accessCredentials.accessToken.data}');
+  print('accessCredentials: ${accessCredentials.refreshToken}');
+
+  //var result = await auth2flow!.runHybridFlow(immediate: auto);
+  var oauthToken = accessCredentials.accessToken.data;
   pickerMain(oauthToken);
 }
 

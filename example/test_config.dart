@@ -9,9 +9,9 @@ class AppOptions {
   String? clientSecret;
 
   AppOptions.fromMap(Map<String, dynamic> map) {
-    developerKey = map['developerKey']?.toString();
-    clientId = map['clientId']?.toString();
-    clientSecret = map['clientSecret']?.toString();
+    developerKey = (map['developerKey'] ?? map['api_key'])?.toString();
+    clientId = (map['clientId'] ?? map['client_id'])?.toString();
+    clientSecret = (map['clientSecret'] ?? map['client_secret'])?.toString();
   }
 
   @override
