@@ -4,30 +4,30 @@ description: file picker api
 publish_to: none
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: ^3.4.0
 
 dependencies:
   tekartik_google_jsapi:
     git:
       url: https://github.com/alextekartik/google-jsapi.dart
-      ref: dart2_3
+      ref: dart3a
     version: '>=0.2.0'
   tekartik_common_utils:
     git:
       url: https://github.com/tekartik/common_utils.dart
-      ref: dart2_3
+      ref: dart3a
   http:
 dev_dependencies:
   yaml:
-  dev_test:
+  dev_build:
   tekartik_bootstrap:
     git:
       url: https://github.com/tekartik/bootstrap.dart
-      ref: dart2_3
+      ref: dart3a
     version: '>=0.3.0'
   build_runner:
   build_test:
   build_web_compilers:
   test: any
-  process_run: '>=0.10.2'
-  googleapis_auth: '>=0.2.10'
+  process_run: '>=1.0.0'
+  googleapis_auth: '>=1.6.0'

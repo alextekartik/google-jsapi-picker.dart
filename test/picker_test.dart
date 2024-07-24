@@ -3,10 +3,10 @@ library picker_test;
 
 import 'dart:async';
 
-import 'package:tekartik_browser_utils/js_utils.dart';
 import 'package:tekartik_google_jsapi/gapi.dart';
 import 'package:tekartik_google_jsapi/gapi_auth.dart';
 import 'package:tekartik_google_jsapi_picker/picker.dart';
+import 'package:tekartik_js_utils/js_utils.dart';
 import 'package:test/test.dart';
 
 import 'test_config.dart';
