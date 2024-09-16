@@ -3,7 +3,7 @@ library google_jsapi_example;
 import 'dart:html';
 
 import 'package:googleapis_auth/auth_browser.dart';
-import 'package:tekartik_browser_utils/browser_utils_import.dart';
+import 'package:tekartik_common_utils/common_utils_import.dart';
 import 'package:tekartik_google_jsapi/gapi.dart';
 import 'package:tekartik_google_jsapi/gapi_auth2.dart';
 import 'package:tekartik_google_jsapi_picker/picker.dart';
