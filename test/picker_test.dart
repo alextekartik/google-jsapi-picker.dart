@@ -1,5 +1,5 @@
 @TestOn('browser')
-library picker_test;
+library;
 
 import 'dart:async';
 

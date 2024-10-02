@@ -1,4 +1,4 @@
-library google_jsapi_example;
+library;
 
 import 'dart:html';
 

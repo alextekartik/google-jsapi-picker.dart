@@ -31,3 +31,8 @@ dev_dependencies:
   test: any
   process_run: '>=1.0.0'
   googleapis_auth: '>=1.6.0'
+  tekartik_js_utils:
+    git:
+      url: https://github.com/tekartik/js_utils.dart
+      ref: dart3a
+      path: js_utils

@@ -1,4 +1,4 @@
-library gapi_picker;
+library;
 
 import 'dart:async';
 import 'dart:js';
@@ -32,7 +32,7 @@ class Picker {
     _jsObject!.callMethod('setVisible', [visible]);
   }
 
-  /// Return Future<null> on cancel
+  /// Throw on cancel
   Future<PickerDataDocuments> pick() {
     final completer = Completer<PickerDataDocuments>();
     visible = true;

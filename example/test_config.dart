@@ -1,4 +1,4 @@
-library test_config;
+library;
 
 class AppOptions {
   // The developer key needed for the picker API
