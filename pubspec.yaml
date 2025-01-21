@@ -18,18 +18,18 @@ dependencies:
       ref: dart3a
   http:
 dev_dependencies:
-  yaml:
-  dev_build:
+  yaml: ">=3.1.2"
+  dev_build: ">=1.1.0+2"
   tekartik_bootstrap:
     git:
       url: https://github.com/tekartik/bootstrap.dart
       ref: dart3a
     version: '>=0.3.0'
-  build_runner:
+  build_runner: ">=2.4.13"
   build_test:
-  build_web_compilers:
-  test: any
-  process_run: '>=1.0.0'
+  build_web_compilers: ">=4.0.11"
+  test: ">=1.24.0"
+  process_run: ">=1.2.1+1"
   googleapis_auth: '>=1.6.0'
   tekartik_js_utils:
     git:
