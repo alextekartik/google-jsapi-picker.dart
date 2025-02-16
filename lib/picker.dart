@@ -1,3 +1,4 @@
+@Deprecated('TO MIGRATE')
 library;
 
 import 'dart:async';

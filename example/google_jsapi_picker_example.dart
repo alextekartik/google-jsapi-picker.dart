@@ -1,24 +1,27 @@
+// ignore_for_file: deprecated_member_use_from_same_package, deprecated_member_use
+
 library;
 
-import 'dart:html';
+//import 'dart:html';
+import 'dart:js_interop';
 
 import 'package:googleapis_auth/auth_browser.dart';
 import 'package:tekartik_common_utils/common_utils_import.dart';
 import 'package:tekartik_google_jsapi/gapi.dart';
 import 'package:tekartik_google_jsapi/gapi_auth2.dart';
 import 'package:tekartik_google_jsapi_picker/picker.dart';
-
+import 'package:web/web.dart' as web;
 import 'test_config.dart';
 import 'test_setup.dart';
 
 GapiAuth2? gapiAuth;
 GooglePicker? gpicker;
 
-Element? authorizeResult;
+web.Element? authorizeResult;
 AppOptions? appOptions;
 ClientId? authClientId;
 final _setupLock = Lock();
-Storage storage = window.localStorage;
+web.Storage storage = web.window.localStorage;
 
 String storageKeyPref = 'com.tekartik.google_jsapi_picker_example';
 
@@ -29,7 +32,7 @@ String? storageGet(String key) {
 void storageSet(String key, String? value) {
   var prefKey = '$storageKeyPref.$key';
   if (value == null) {
-    storage.remove(prefKey);
+    storage.removeItem(prefKey);
   } else {
     storage[prefKey] = value;
   }
@@ -41,12 +44,12 @@ String appMimeTypesKey = 'mime_types';
 String selectFolderEnabledKey = 'select_folder_enabled';
 String includeFoldersKey = 'include_folders';
 
-Element? pickResult;
+web.Element? pickResult;
 String? _authToken;
-InputElement? mimeTypesInput;
+web.HTMLInputElement? mimeTypesInput;
 
 void _pick() {
-  final mimeTypesText = mimeTypesInput!.value!;
+  final mimeTypesText = mimeTypesInput!.value;
   storageSet(appMimeTypesKey, mimeTypesText);
 
   final builder = PickerBuilder(gpicker);
@@ -79,26 +82,26 @@ void _pick() {
   builder.oauthToken = _authToken;
   final uiPicker = builder.build();
   uiPicker.pick().then((PickerDataDocuments docs) {
-    pickResult!.innerHtml = docs.toString();
+    pickResult!.innerHTML = docs.toString().toJS;
 
     //pickResult.innerHtml = docs[0].id;
   });
 }
 
 void pickerMain(String authToken) {
-  authorizeResult!.innerHtml = 'Authorize token $authToken';
+  authorizeResult!.innerHTML = 'Authorize token $authToken'.toJS;
   print('token: $authToken');
   _authToken = authToken;
 
-  final pickerForm = querySelector('form.app-picker')!;
+  final pickerForm = web.document.querySelector('form.app-picker')!;
   pickResult = pickerForm.querySelector('.app-result');
-  pickerForm.classes.remove('hidden');
-  mimeTypesInput =
-      pickerForm.querySelector('input#appInputMimeTypes') as InputElement?;
+  pickerForm.classList.remove('hidden');
+  mimeTypesInput = pickerForm.querySelector('input#appInputMimeTypes')
+      as web.HTMLInputElement?;
   final pickButton = pickerForm.querySelector('button.app-pick')!;
 
   final selectFolderEnabledInput = pickerForm
-      .querySelector('#appInputSelectFolderEnabled') as CheckboxInputElement;
+      .querySelector('#appInputSelectFolderEnabled') as web.HTMLInputElement;
   final selectFolderEnabled =
       storageGet(selectFolderEnabledKey) == true.toString();
   selectFolderEnabledInput.checked = selectFolderEnabled;
@@ -108,16 +111,16 @@ void pickerMain(String authToken) {
   });
 
   final includeFoldersInput = pickerForm
-      .querySelector('#appInputIncludeFolders') as CheckboxInputElement;
+      .querySelector('#appInputIncludeFolders') as web.HTMLInputElement;
   final includeFolders = storageGet(includeFoldersKey) == true.toString();
   includeFoldersInput.checked = includeFolders;
   includeFoldersInput.onChange.listen((_) {
     storageSet(includeFoldersKey, includeFoldersInput.checked.toString());
   });
 
-  mimeTypesInput!.value = storageGet(appMimeTypesKey);
+  mimeTypesInput!.value = storageGet(appMimeTypesKey) ?? '';
 
-  pickButton.onClick.listen((Event event) {
+  pickButton.onClick.listen((web.Event event) {
     event.preventDefault();
     _pick();
   });
@@ -130,7 +133,7 @@ Future configSetup() async {
         appOptions = await setup();
 
         void errorSetup() {
-          authorizeResult!.innerText = '''
+          authorizeResult!.textContent = '''
 ERROR: Missing clientId, clientSecret or developerKey
 Create local.config.yaml from sample.local.config.yaml ($appOptions)''';
         }
@@ -171,15 +174,15 @@ Future _authorize({bool? auto}) async {
 }
 
 void authMain() {
-  final authForm = querySelector('form.app-auth')!;
-  authForm.classes.remove('hidden');
+  final authForm = web.document.querySelector('form.app-auth')!;
+  authForm.classList.remove('hidden');
   final authorizeButton = authForm.querySelector('button.app-authorize')!;
 
   authorizeResult = authForm.querySelector('.app-result');
   final autoAuthCheckbox =
-      authForm.querySelector('.app-autoauth') as CheckboxInputElement;
+      authForm.querySelector('.app-autoauth') as web.HTMLInputElement;
 
-  authorizeButton.onClick.listen((Event event) {
+  authorizeButton.onClick.listen((web.Event event) {
     event.preventDefault();
     _authorize();
   });
@@ -196,25 +199,25 @@ void authMain() {
   }
 }
 
-Element? loadGapiResult;
+late web.Element loadGapiResult;
 
 Future _loadPicker() async {
-  loadGapiResult!.innerHtml = 'loading Gapi...';
+  loadGapiResult.textContent = 'loading Gapi...';
   try {
     final gapi = await loadGapiPlatform();
-    loadGapiResult!.innerHtml = 'loading GooglePicker...';
+    loadGapiResult.textContent = 'loading GooglePicker...';
     gpicker = await loadPicker(gapi);
-    loadGapiResult!.innerHtml = 'GooglePicker loaded';
+    loadGapiResult.textContent = 'GooglePicker loaded';
   } catch (e) {
-    loadGapiResult!.innerHtml = 'load failed $e';
+    loadGapiResult.textContent = 'load failed $e';
     rethrow;
   }
   authMain();
 }
 
 Future main() async {
-  final loadGapiForm = querySelector('form.app-gapi')!;
-  loadGapiResult = loadGapiForm.querySelector('.app-result');
+  final loadGapiForm = web.document.querySelector('form.app-gapi')!;
+  loadGapiResult = loadGapiForm.querySelector('.app-result')!;
 
   await await _loadPicker();
   authMain();

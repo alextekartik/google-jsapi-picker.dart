@@ -1,6 +1,8 @@
 google-jsapi-picker.dart
 ========================
 
+**DEPRECATED** (looking for solutions)
+
 Google File picker access from Dart
 
 [Online demo](http://gstest.tekartik.com/google-jsapi-picker/example/google_jsapi_picker_example.html)
