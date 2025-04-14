@@ -23,6 +23,7 @@ Add this dependency to your pubspec.yaml
   dependencies:
      tekartik_google_jsapi_picker:
        git: https://github.com/alextekartik/google-jsapi-picker.dart.git
+       ref: dart3a
 ```
 
 
