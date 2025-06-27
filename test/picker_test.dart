@@ -54,15 +54,15 @@ void pickerMain() {
     if (options != null) {
       final gapiAuth = await loadGapiAuth(gapi);
       return gapiAuth
-          .authorize(options!.clientId!, [GooglePicker.scopeDriveAppFile]).then(
-              (String oauthToken) {
-        final builder = PickerBuilder(gpicker);
-        builder.addViewId(gpicker!.viewId.photos);
-        builder.developerKey = options!.developerKey;
-        builder.oauthToken = null; // optopnnull;
-        final uiPicker = builder.build();
-        uiPicker.visible = true;
-      });
+          .authorize(options!.clientId!, [GooglePicker.scopeDriveAppFile])
+          .then((String oauthToken) {
+            final builder = PickerBuilder(gpicker);
+            builder.addViewId(gpicker!.viewId.photos);
+            builder.developerKey = options!.developerKey;
+            builder.oauthToken = null; // optopnnull;
+            final uiPicker = builder.build();
+            uiPicker.visible = true;
+          });
     }
   }, skip: true);
 

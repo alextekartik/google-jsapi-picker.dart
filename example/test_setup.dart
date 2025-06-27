@@ -26,7 +26,8 @@ Future<AppOptions?> setup() async {
       print(e);
       print('Cannot find local.config.yaml');
       print(
-          'Create it from the sample.local.config.yaml file with your firebase information');
+        'Create it from the sample.local.config.yaml file with your firebase information',
+      );
       print(sample);
     }
   } catch (e) {

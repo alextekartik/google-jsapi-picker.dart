@@ -96,22 +96,27 @@ void pickerMain(String authToken) {
   final pickerForm = web.document.querySelector('form.app-picker')!;
   pickResult = pickerForm.querySelector('.app-result');
   pickerForm.classList.remove('hidden');
-  mimeTypesInput = pickerForm.querySelector('input#appInputMimeTypes')
-      as web.HTMLInputElement?;
+  mimeTypesInput =
+      pickerForm.querySelector('input#appInputMimeTypes')
+          as web.HTMLInputElement?;
   final pickButton = pickerForm.querySelector('button.app-pick')!;
 
-  final selectFolderEnabledInput = pickerForm
-      .querySelector('#appInputSelectFolderEnabled') as web.HTMLInputElement;
+  final selectFolderEnabledInput =
+      pickerForm.querySelector('#appInputSelectFolderEnabled')
+          as web.HTMLInputElement;
   final selectFolderEnabled =
       storageGet(selectFolderEnabledKey) == true.toString();
   selectFolderEnabledInput.checked = selectFolderEnabled;
   selectFolderEnabledInput.onChange.listen((_) {
     storageSet(
-        selectFolderEnabledKey, selectFolderEnabledInput.checked.toString());
+      selectFolderEnabledKey,
+      selectFolderEnabledInput.checked.toString(),
+    );
   });
 
-  final includeFoldersInput = pickerForm
-      .querySelector('#appInputIncludeFolders') as web.HTMLInputElement;
+  final includeFoldersInput =
+      pickerForm.querySelector('#appInputIncludeFolders')
+          as web.HTMLInputElement;
   final includeFolders = storageGet(includeFoldersKey) == true.toString();
   includeFoldersInput.checked = includeFolders;
   includeFoldersInput.onChange.listen((_) {
@@ -147,8 +152,10 @@ Create local.config.yaml from sample.local.config.yaml ($appOptions)''';
           return;
         }
 
-        authClientId =
-            ClientId(appOptions!.clientId!, appOptions!.clientSecret);
+        authClientId = ClientId(
+          appOptions!.clientId!,
+          appOptions!.clientSecret,
+        );
 
         // auth2flow = await createImplicitBrowserFlow(authClientId, scopes);
       }
@@ -163,7 +170,9 @@ Future _authorize({bool? auto}) async {
   final scopes = <String>[GooglePicker.scopeDriveAppFile];
 
   var accessCredentials = await requestAccessCredentials(
-      clientId: authClientId!.identifier, scopes: scopes);
+    clientId: authClientId!.identifier,
+    scopes: scopes,
+  );
   print('accessCredentials: $accessCredentials');
   print('accessCredentials: ${accessCredentials.accessToken.data}');
   print('accessCredentials: ${accessCredentials.refreshToken}');

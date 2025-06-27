@@ -4,7 +4,7 @@ description: file picker api
 publish_to: none
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.8.0
 
 dependencies:
   tekartik_google_jsapi:
@@ -20,7 +20,7 @@ dependencies:
   web:
 dev_dependencies:
   yaml: ">=3.1.2"
-  dev_build: ">=1.1.0+2"
+  dev_build: ">=1.1.2"
   tekartik_bootstrap:
     git:
       url: https://github.com/tekartik/bootstrap.dart

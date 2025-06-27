@@ -37,17 +37,19 @@ class Picker {
   Future<PickerDataDocuments> pick() {
     final completer = Completer<PickerDataDocuments>();
     visible = true;
-    stream.listen((PickerData data) {
-      // print(data);
-      if (data.action == picker!.action.cancel) {
-        completer.completeError(const GapiException('cancel'));
-      }
-      if (data.action == picker!.action.picked) {
-        completer.complete(data.documents);
-      }
-    }).onError((Object e) {
-      completer.completeError(e);
-    });
+    stream
+        .listen((PickerData data) {
+          // print(data);
+          if (data.action == picker!.action.cancel) {
+            completer.completeError(const GapiException('cancel'));
+          }
+          if (data.action == picker!.action.picked) {
+            completer.complete(data.documents);
+          }
+        })
+        .onError((Object e) {
+          completer.completeError(e);
+        });
     return completer.future;
   }
 }
@@ -207,7 +209,9 @@ class PickerData {
   PickerDataDocuments? _documents;
 
   PickerDataDocuments get documents => _documents ??= PickerDataDocuments(
-      picker, jsObject[picker!.response.documents!] as JsArray?);
+    picker,
+    jsObject[picker!.response.documents!] as JsArray?,
+  );
 
   @override
   String toString() {
@@ -377,8 +381,9 @@ GooglePicker? _picker;
 Future<GooglePicker> loadPicker(Gapi? gapi) {
   if (_picker == null) {
     return gapi!.load('picker').then((_) {
-      _picker =
-          GooglePicker((context['google'] as JsObject)['picker'] as JsObject?);
+      _picker = GooglePicker(
+        (context['google'] as JsObject)['picker'] as JsObject?,
+      );
       return _picker!;
     });
   }

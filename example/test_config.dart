@@ -16,8 +16,8 @@ class AppOptions {
 
   @override
   String toString() => {
-        'developerKey': developerKey,
-        'clientId': clientId,
-        'clientSecret': clientSecret
-      }.toString();
+    'developerKey': developerKey,
+    'clientId': clientId,
+    'clientSecret': clientSecret,
+  }.toString();
 }
