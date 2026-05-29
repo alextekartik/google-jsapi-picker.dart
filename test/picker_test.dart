@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use_from_same_package, deprecated_member_use
+// ignore_for_file: avoid_print, deprecated_member_use_from_same_package, deprecated_member_use
 
 @TestOn('browser')
 library;
