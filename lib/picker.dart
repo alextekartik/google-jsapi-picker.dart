@@ -14,14 +14,14 @@ class Picker {
 
   Picker._(this.picker);
 
-  /// Single stream controller
+  /// Broadcast stream controller, [pick] can be called multiple times
   ///
   /// only onData is called
   Stream<PickerData> get stream {
     return ctlr.stream;
   }
 
-  StreamController<PickerData> ctlr = StreamController();
+  StreamController<PickerData> ctlr = StreamController.broadcast();
 
   void _callback(JsObject jsData) {
     //print(jsObjectAsMap(jsData));
@@ -37,19 +37,23 @@ class Picker {
   Future<PickerDataDocuments> pick() {
     final completer = Completer<PickerDataDocuments>();
     visible = true;
-    stream
-        .listen((PickerData data) {
-          // print(data);
-          if (data.action == picker!.action.cancel) {
-            completer.completeError(const GapiException('cancel'));
-          }
-          if (data.action == picker!.action.picked) {
-            completer.complete(data.documents);
-          }
-        })
-        .onError((Object e) {
-          completer.completeError(e);
-        });
+    late StreamSubscription<PickerData> subscription;
+    subscription = stream.listen(
+      (PickerData data) {
+        // print(data);
+        if (data.action == picker!.action.cancel) {
+          unawaited(subscription.cancel());
+          completer.completeError(const GapiException('cancel'));
+        } else if (data.action == picker!.action.picked) {
+          unawaited(subscription.cancel());
+          completer.complete(data.documents);
+        }
+      },
+      onError: (Object e) {
+        unawaited(subscription.cancel());
+        completer.completeError(e);
+      },
+    );
     return completer.future;
   }
 }

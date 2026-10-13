@@ -65,8 +65,8 @@ void _pick() {
   // use docs view for folder
   if (selectFolderEnabled || includeFolders) {
     final pickerDocsView = PickerDocsView(gpicker!, gpicker!.viewId.docs);
-    pickerDocsView.selectFolderEnabled = true;
-    pickerDocsView.includeFolders = true;
+    pickerDocsView.selectFolderEnabled = selectFolderEnabled;
+    pickerDocsView.includeFolders = includeFolders;
     pickerView = pickerDocsView;
   } else {
     pickerView = PickerView(gpicker!, gpicker!.viewId.docs);
@@ -228,6 +228,6 @@ Future main() async {
   final loadGapiForm = web.document.querySelector('form.app-gapi')!;
   loadGapiResult = loadGapiForm.querySelector('.app-result')!;
 
-  await await _loadPicker();
-  authMain();
+  // _loadPicker ends with authMain()
+  await _loadPicker();
 }
