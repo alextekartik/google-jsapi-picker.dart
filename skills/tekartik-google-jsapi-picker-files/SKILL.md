@@ -6,8 +6,8 @@ description: >-
   (developerKey, oauthToken, addView, addViewId, selectableMimeTypes),
   PickerView, PickerDocsView, Picker.pick / Picker.visible / Picker.stream,
   PickerData, PickerDataDocuments, PickerDataDocument, ViewId, PickerAction,
-  GooglePicker.scopeDriveAppFile and the picker.dart import. Deprecated legacy
-  package: read it before touching existing picker code.
+  GooglePicker.scopeDriveAppFile and the picker.dart import. On
+  dart:js_interop since 0.3.0 (dart2js and dart2wasm).
 ---
 
 # Google Drive file picker (tekartik_google_jsapi_picker)
@@ -16,9 +16,9 @@ description: >-
 loads the `picker` gapi module through `tekartik_google_jsapi`, builds a picker
 dialog and returns the picked Drive documents as Dart objects.
 
-Both this package and `tekartik_google_jsapi` are marked deprecated (`picker.dart`
-is `@Deprecated('TO MIGRATE')`) and use the legacy `dart:js` interop. Use this
-skill to read or repair an existing browser app, not to start a new one.
+Since 0.3.0 the package (and `tekartik_google_jsapi` 0.3.0) is on
+`dart:js_interop` and `package:web`: it builds with dart2js and dart2wasm. The
+wrapped javascript objects are `JSObject`s (`JsObject` before 0.3.0).
 
 ## Guidelines
 
@@ -33,9 +33,9 @@ skill to read or repair an existing browser app, not to start a new one.
       git:
         url: https://github.com/alextekartik/google-jsapi.dart
   ```
-* Browser only (`dart:js`): compiles with `dart compile js` /
-  `build_web_compilers`, not to wasm, and tests are `@TestOn('browser')`
-  (`dart run build_runner test -- -p chrome`). One import:
+* Browser only: compiles with `dart compile js` and `dart compile wasm` (or
+  `build_web_compilers`, Flutter web); tests are `@TestOn('browser')`
+  (`dart test`, `dart_test.yaml` runs Chrome with dart2js and dart2wasm). One import:
   `package:tekartik_google_jsapi_picker/picker.dart`.
 * Loading, in order: `var gapi = await loadGapiPlatform();` (from
   `package:tekartik_google_jsapi/gapi.dart`, the bare `platform.js` is enough)
@@ -48,7 +48,8 @@ skill to read or repair an existing browser app, not to start a new one.
   `gpicker.document` (`url`, `id`, `name`, `mimeType`, `description`,
   `version`), `gpicker.feature` (`multiSelectEnabled`) and `gpicker.viewId`
   (only `docs` and `photos` have getters). For any other view id read the raw
-  js map, `gpicker.viewId.jsObject!['SPREADSHEETS'] as String?`, or pass the
+  js object, `(gpicker.viewId.jsObject!['SPREADSHEETS'] as JSString?)?.toDart`
+  (`dart:js_interop` + `dart:js_interop_unsafe`), or pass the
   documented string to `addViewId`. Every ALL_CAPS member (`DOCS`, `PICKED`,
   `SCOPE_DRIVE_APP_FILE`, ...) is a deprecated alias of the camelCase one.
 * Build a dialog with `PickerBuilder(gpicker)`: `addView(PickerView)` or
@@ -67,13 +68,14 @@ skill to read or repair an existing browser app, not to start a new one.
   always wrap `pick()` in a try/catch. For custom handling use
   `picker.visible = true` plus `picker.stream` (`PickerData.action` compared
   with `gpicker.action.picked` / `gpicker.action.cancel`).
-* `Picker.stream` is a single-subscription controller and `pick()` subscribes
-  to it, so one `Picker` serves one pick: call `builder.build()` again (or
-  rebuild the builder) for the next one. Neither the controller nor the js
+* `Picker.stream` is a broadcast stream (every callback: loaded, picked,
+  cancel) and `pick()` listens to it until picked or cancel, so one `Picker`
+  can be shown again with another `pick()`. Neither the controller nor the js
   dialog is disposed for you.
-* Results: `docs.length`, `docs[i]` -> `PickerDataDocument` with `id`, `name`,
-  `url`, `mimeType`, `description`, `version` and `asMap()`;
-  `docs.asList()` / `docs.toString()` give a loggable `List<Map>`. The picker
+* Results: `docs.length` (0 when the response has no documents), `docs[i]`
+  -> `PickerDataDocument` with `id`, `name`, `url`, `mimeType`,
+  `description`, `version` and `asMap()`; `docs.asList()` /
+  `docs.toString()` give a loggable `List<Map>`. The picker
   returns metadata only: download the content with the Drive api and the same
   access token.
 * Credentials: `developerKey` is the browser API key and `oauthToken` an
@@ -96,7 +98,6 @@ skill to read or repair an existing browser app, not to start a new one.
 ### Load the picker and pick files
 
 ```dart
-// ignore_for_file: deprecated_member_use
 import 'package:tekartik_google_jsapi/gapi.dart';
 import 'package:tekartik_google_jsapi_picker/picker.dart';
 
@@ -128,7 +129,6 @@ Future<List<Map>> pickFiles({
 ### Pick a folder, or only some mime types
 
 ```dart
-// ignore_for_file: deprecated_member_use
 import 'package:tekartik_google_jsapi_picker/picker.dart';
 
 /// Folder selection needs a [PickerDocsView], not a plain [PickerView].
@@ -152,7 +152,6 @@ Picker buildFolderPicker(
 ### Handle the raw picker events instead of pick()
 
 ```dart
-// ignore_for_file: deprecated_member_use
 import 'package:tekartik_google_jsapi_picker/picker.dart';
 
 void showAndListen(GooglePicker gpicker, Picker picker) {
@@ -173,7 +172,6 @@ void showAndListen(GooglePicker gpicker, Picker picker) {
 ### Get an access token with Google Identity Services, then pick
 
 ```dart
-// ignore_for_file: deprecated_member_use
 import 'package:googleapis_auth/auth_browser.dart';
 import 'package:tekartik_google_jsapi/gapi.dart';
 import 'package:tekartik_google_jsapi_picker/picker.dart';

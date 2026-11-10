@@ -4,11 +4,12 @@
 library;
 
 import 'dart:async';
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 
 import 'package:tekartik_google_jsapi/gapi.dart';
 import 'package:tekartik_google_jsapi/gapi_auth.dart';
 import 'package:tekartik_google_jsapi_picker/picker.dart';
-import 'package:tekartik_js_utils/js_utils.dart';
 import 'package:test/test.dart';
 
 import 'test_config.dart';
@@ -42,8 +43,7 @@ void pickerMain() {
   });
 
   test('constants', () {
-    Map pickerMap = jsObjectAsMap(gpicker!.jsObject)!;
-    print(pickerMap['ViewId']);
+    print((gpicker!.jsObject!['ViewId'] as JSObject).dartify());
     expect(gpicker!.response.action, 'action');
     expect(gpicker!.action.picked, 'picked');
     expect(gpicker!.response.documents, 'docs');
